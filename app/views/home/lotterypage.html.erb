@@ -1,0 +1,158 @@
+<head>
+  <meta charset="utf-8"/>
+  <html lang="ko">
+</head>
+
+<body>
+  <!-- 전체 내용이 담길 상자 -->
+  <div class="container text_centered">
+
+    <!--페이지 위에 있는 이미지-->
+    <div class="image">
+
+      <a href = '/home/homepage'><img src="https://o.aolcdn.com/images/dims3/GLOB/legacy_thumbnail/630x315/format/jpg/quality/85/http%3A%2F%2Fi.huffpost.com%2Fgen%2F1973978%2Fimages%2Fn-LOTTERY-WINNER-628x314.jpg"/></a>
+
+    </div>
+
+    <!-- 로또 결과 불러오기 -->
+    <div class="column0">
+      <div class="title">
+        <p><801회 로또 결과></p>
+      </div>
+    </div>
+
+    <div class="empty_column1">
+
+    </div>
+
+    <div class="column1">
+
+      <div class="text">
+        <p>당첨 번호</p>
+      </div>
+
+      <div class="result">
+
+        <% require 'nokogiri' %>
+        <% require 'rest-client' %>
+        <% require 'pry' %>
+        <% require 'open-uri' %>
+
+        <% doc = Nokogiri::HTML(open("http://www.nlotto.co.kr/gameResult.do?method=byWin")) %>
+
+        <% a = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(1)')[0]['alt'] %>
+        <% a.to_i %>
+
+        <% b = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(2)')[0]['alt'] %>
+         <% b.to_i %>
+
+        <% c = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(3)')[0]['alt'] %>
+        <% c.to_i %>
+
+        <% d = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(4)')[0]['alt'] %>
+        <% d.to_i %>
+
+        <% e = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(5)')[0]['alt'] %>
+        <% e.to_i %>
+
+        <% f = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
+        img:nth-child(6)')[0]['alt'] %>
+        <% f.to_i %>
+
+        <% g = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p > span.number_bonus > img')[0]['alt'] %>
+        <% g.to_i %>
+
+      <!-- 상금 값 불러오기 -->
+
+        <% firstprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(2) > td:nth-child(2) > strong').text %>
+        <% secondprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(3) > td:nth-child(2) > strong').text %>
+        <% thirdprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(4) > td:nth-child(2) > strong').text %>
+        <% fourthprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(5) > td:nth-child(2) > strong').text %>
+        <% fifthprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(6) > td:nth-child(2) > strong').text %>
+
+      <!-- 당첨 번호 불러온거 프린트 -->
+
+        <%= lotterybring_view = a + " ," + b + " ," + c + " ," + d + " ," + e + " ," + f %>
+        <% lotteryarray = [a.to_i ,b.to_i, c.to_i, d.to_i, e.to_i, f.to_i] %>
+        <% lotteryarray %>
+        <% bonusnumberincluded= [a.to_i ,b.to_i, c.to_i, d.to_i, e.to_i, f.to_i,g.to_i] %>
+
+     </div>
+
+    </div>
+
+
+    <!-- 보너스 번호 불러오기 -->
+    <div class="column2">
+      <div class="text">
+        <p>보너스</p>
+      </div>
+
+      <div class="result bonus">
+        <%= g %>
+      </div>
+
+    </div>
+
+    <div class="empty_column2">
+
+    </div>
+
+
+    <!-- 로또 번호 생성하기 -->
+    <div class = "column3">
+
+      <div class="title">
+        <p><당신의 로또 추첨 번호></p>
+      </div>
+
+      <div class="result yours">
+        <% 1.times.each do |i| %>
+        <% lotteryresult = lotterypicks.sort %>
+        <%= lotteryresult_view = lotteryresult.join(" ,") %>
+        <% lotteryresult_compare = lotteryresult%>
+      </div>
+    </div>
+
+    <!-- 두 값 비교하기 -->
+    <div class="column4">
+      <div class="title">
+        <p><당첨 결과></p>
+      </div>
+      <div class="text yours">
+        <% if lotteryarray == lotteryresult_compare %>
+          <%= '1등!' + '상금 = ' + firstprize  %>
+        <% elsif (bonusnumberincluded & lotteryresult_compare).size == 6 %>
+          <%= '2등!' + '상금 = ' + secondprize %>
+        <% elsif (lotteryarray & lotteryresult_compare).size == 5 %>
+          <%= '3등!' + '상금 = ' + thirdprize %>
+        <% elsif (lotteryarray & lotteryresult_compare).size == 4 %>
+          <%= '4등!' + '상금 = ' + fourthprize%>
+        <% elsif (lotteryarray & lotteryresult_compare).size == 3 %>
+          <%= '5등!' + '상금 = ' + fifthprize %>
+        <% elsif (lotteryarray & lotteryresult_compare).size == 2 %>
+          <%= '꽝 - 2개 일치' %>
+        <% elsif (lotteryarray & lotteryresult_compare).size == 1 %>
+          <%= '꽝 - 1개 일치' %>
+        <% else %>
+          <%= '꽝 - 0개 일치' %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 재추첨 버튼 -->
+    <div>
+      <a href='/home/lotterypage'><img src="https://shop.r10s.jp/e-zakka-asa/cabinet/event/xt80007.jpg" alt="go" width="100" height="100"/></a>
+      <div class="text">
+        <p> &uarr; 상자를 누르면 재추첨 합니다 &uarr; </p>
+      </div>
+    </div>
+
+    <%end%>
+
+  </div>
