@@ -33,54 +33,7 @@
 
       <div class="result">
 
-        <% require 'nokogiri' %>
-        <% require 'rest-client' %>
-        <% require 'pry' %>
-        <% require 'open-uri' %>
-
-        <% doc = Nokogiri::HTML(open("http://www.nlotto.co.kr/gameResult.do?method=byWin")) %>
-
-        <% a = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(1)')[0]['alt'] %>
-        <% a.to_i %>
-
-        <% b = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(2)')[0]['alt'] %>
-         <% b.to_i %>
-
-        <% c = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(3)')[0]['alt'] %>
-        <% c.to_i %>
-
-        <% d = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(4)')[0]['alt'] %>
-        <% d.to_i %>
-
-        <% e = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(5)')[0]['alt'] %>
-        <% e.to_i %>
-
-        <% f = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p >
-        img:nth-child(6)')[0]['alt'] %>
-        <% f.to_i %>
-
-        <% g = doc.css('body > section > article > article > div > div.lotto_win_number.mt12 > p > span.number_bonus > img')[0]['alt'] %>
-        <% g.to_i %>
-
-      <!-- 상금 값 불러오기 -->
-
-        <% firstprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(2) > td:nth-child(2) > strong').text %>
-        <% secondprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(3) > td:nth-child(2) > strong').text %>
-        <% thirdprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(4) > td:nth-child(2) > strong').text %>
-        <% fourthprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(5) > td:nth-child(2) > strong').text %>
-        <% fifthprize = doc.css('body > section > article > article > div > table.tblType1.f12.mt40 > tbody > tr:nth-child(6) > td:nth-child(2) > strong').text %>
-
-      <!-- 당첨 번호 불러온거 프린트 -->
-
-        <%= lotterybring_view = a + " ," + b + " ," + c + " ," + d + " ," + e + " ," + f %>
-        <% lotteryarray = [a.to_i ,b.to_i, c.to_i, d.to_i, e.to_i, f.to_i] %>
-        <% lotteryarray %>
-        <% bonusnumberincluded= [a.to_i ,b.to_i, c.to_i, d.to_i, e.to_i, f.to_i,g.to_i] %>
+        <%= @lotterybring_view %>
 
      </div>
 
@@ -94,7 +47,7 @@
       </div>
 
       <div class="result bonus">
-        <%= g %>
+        <%= @g %>
       </div>
 
     </div>
@@ -125,19 +78,19 @@
         <p><당첨 결과></p>
       </div>
       <div class="text yours">
-        <% if lotteryarray == lotteryresult_compare %>
+        <% if @lotteryarray == lotteryresult_compare %>
           <%= '1등!' + '상금 = ' + firstprize  %>
-        <% elsif (bonusnumberincluded & lotteryresult_compare).size == 6 %>
+        <% elsif (@g & lotteryresult_compare).size == 1 && (@lotteryarray & lotteryresult_compare).size == 5 %>
           <%= '2등!' + '상금 = ' + secondprize %>
-        <% elsif (lotteryarray & lotteryresult_compare).size == 5 %>
+        <% elsif (@lotteryarray & lotteryresult_compare).size == 5 %>
           <%= '3등!' + '상금 = ' + thirdprize %>
-        <% elsif (lotteryarray & lotteryresult_compare).size == 4 %>
+        <% elsif (@lotteryarray & lotteryresult_compare).size == 4 %>
           <%= '4등!' + '상금 = ' + fourthprize%>
-        <% elsif (lotteryarray & lotteryresult_compare).size == 3 %>
+        <% elsif (@lotteryarray & lotteryresult_compare).size == 3 %>
           <%= '5등!' + '상금 = ' + fifthprize %>
-        <% elsif (lotteryarray & lotteryresult_compare).size == 2 %>
+        <% elsif (@lotteryarray & lotteryresult_compare).size == 2 %>
           <%= '꽝 - 2개 일치' %>
-        <% elsif (lotteryarray & lotteryresult_compare).size == 1 %>
+        <% elsif (@lotteryarray & lotteryresult_compare).size == 1 %>
           <%= '꽝 - 1개 일치' %>
         <% else %>
           <%= '꽝 - 0개 일치' %>
@@ -154,6 +107,5 @@
     </div>
 
     <%end%>
-</body>
 
   </div>
