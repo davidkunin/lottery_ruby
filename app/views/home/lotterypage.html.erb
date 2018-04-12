@@ -80,7 +80,7 @@
       <div class="text yours">
         <% if @lotteryarray == lotteryresult_compare %>
           <%= '1등!' + '상금 = ' + firstprize  %>
-        <% elsif (@g & lotteryresult_compare).size == 1 && (@lotteryarray & lotteryresult_compare).size == 5 %>
+        <% elsif (@bonusnumber & lotteryresult_compare).size == 1 && (@lotteryarray & lotteryresult_compare).size == 5 %>
           <%= '2등!' + '상금 = ' + secondprize %>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 5 %>
           <%= '3등!' + '상금 = ' + thirdprize %>
