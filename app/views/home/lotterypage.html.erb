@@ -80,15 +80,15 @@
       </div>
       <div class="text yours">
         <% if @lotteryarray == lotteryresult_compare %>
-          <%= '1등!' + '상금 = ' + firstprize  %>
+          <%= '1등!' + '상금 = ' + @firstprize  %>
         <% elsif (@bonusnumber & lotteryresult_compare).size == 1 && (@lotteryarray & lotteryresult_compare).size == 5 %>
-          <%= '2등!' + '상금 = ' + secondprize %>
+          <%= '2등!' + '상금 = ' + @secondprize %>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 5 %>
-          <%= '3등!' + '상금 = ' + thirdprize %>
+          <%= '3등!' + '상금 = ' + @thirdprize %>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 4 %>
-          <%= '4등!' + '상금 = ' + fourthprize%>
+          <%= '4등!' + '상금 = ' + @fourthprize%>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 3 %>
-          <%= '5등!' + '상금 = ' + fifthprize %>
+          <%= '5등!' + '상금 = ' + @fifthprize %>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 2 %>
           <%= '꽝 - 2개 일치' %>
         <% elsif (@lotteryarray & lotteryresult_compare).size == 1 %>
